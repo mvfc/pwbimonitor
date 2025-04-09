@@ -1,7 +1,7 @@
 use dns_lookup::lookup_host;
 use std::net::{IpAddr, Ipv4Addr};
 use etherparse::{PacketHeaders, TransportHeader};
-use pcap::{ConnectionStatus, Device, IfFlags, Packet};
+use pcap::{ConnectionStatus, Device, IfFlags, Packet, Capture};
 use httparse::Request;
 
 fn parse_dns(hostname: &str) -> Vec<IpAddr> {
@@ -108,13 +108,13 @@ fn main() {
     let ip_list: Vec<IpAddr> = parse_dns("pbipweu1-westeurope.pbidedicated.windows.net");
 
     // opens the device and starts an active capture
-    let mut cap = device_list[find_device_index(&device_list)
-        .expect("No up and running internet connected device found.")]
-        .clone()
+    let mut cap = Capture::from_device(device_list[find_device_index(&device_list)
+        .expect("No up and running internet connected device found.")].clone())
+        .expect("Failed to create capture from device")
+        .promisc(true) // Set promiscuous mode
+        .snaplen(5000) // Set the snapshot length
         .open()
-        .expect("Failed to open device")
-        .filter("tcp port 443", true)
-        .expect("Failed to set filter");
+        .expect("Failed to open capture");
 
     // iterates over captured packets
     while let Ok(packet) = cap.next_packet() {
