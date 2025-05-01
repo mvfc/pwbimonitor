@@ -8,7 +8,7 @@ fn main() {
         println!("cargo:rerun-if-changed=libs/winpcap/include");
 
         // If building from a workspace
-        println!("cargo:rustc-link-search=pwbimonitor/libs/winpcap/lib");
-        println!("cargo:rerun-if-changed=pwbimonitor/libs/winpcap/include");
+        println!("cargo:rustc-link-search=psniff/libs/winpcap/lib");
+        println!("cargo:rerun-if-changed=psniff/libs/winpcap/include");
     }
 }
