@@ -257,7 +257,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "pwbimonitor"
+name = "psniff"
 version = "0.1.0"
 dependencies = [
  "dns-lookup",
